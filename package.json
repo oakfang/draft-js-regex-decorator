@@ -1,5 +1,6 @@
 {
   "name": "draft-js-regex-decorator",
+  "description": "A RegEx based DraftJS decorator",
   "version": "0.1.0",
   "license": "MIT",
   "author": "Alon Niv",
@@ -39,5 +40,10 @@
     "tsdx": "^0.11.0",
     "tslib": "^1.10.0",
     "typescript": "^3.7.2"
+  },
+  "dependencies": {
+    "@testing-library/react": "^9.3.2",
+    "@types/draft-js": "^0.10.37",
+    "draft-js": "^0.11.2"
   }
 }
