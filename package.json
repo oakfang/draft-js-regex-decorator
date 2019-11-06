@@ -1,7 +1,7 @@
 {
   "name": "draft-js-regex-decorator",
   "description": "A RegEx based DraftJS decorator",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "license": "MIT",
   "author": "Alon Niv",
   "main": "dist/index.js",
@@ -14,7 +14,8 @@
     "start": "tsdx watch",
     "build": "tsdx build",
     "test": "tsdx test --env=jsdom",
-    "lint": "tsdx lint"
+    "lint": "tsdx lint",
+    "prepublishOnly": "npm run build"
   },
   "peerDependencies": {
     "react": ">=16"
