@@ -4,21 +4,35 @@ import { iterateMatches } from './regex-utils';
 
 type StrategyCallback = (start: number, end: number) => void;
 
-const decorateRegex = (regex: RegExp) => (
-  contentBlock: ContentBlock,
-  callback: StrategyCallback
+interface DecoratorRegexOptions {
+  trim: boolean;
+}
+
+const decorateRegex = (
+  regex: RegExp,
+  options?: Partial<DecoratorRegexOptions>
 ) => {
-  for (let { match, index } of iterateMatches(regex, contentBlock.getText())) {
-    callback(index, index + match.length);
-  }
+  const { trim = false } = options || {};
+  return (contentBlock: ContentBlock, callback: StrategyCallback) => {
+    for (let { match, index } of iterateMatches(
+      regex,
+      contentBlock.getText()
+    )) {
+      if (trim) {
+        match = match.trim();
+      }
+      callback(index, index + match.length);
+    }
+  };
 };
 
 export default function createRegExDecorator(
   regex: RegExp,
-  component: ComponentType<{}>
+  component: ComponentType<{}>,
+  options?: Partial<DecoratorRegexOptions>
 ): DraftDecorator {
   return {
     component,
-    strategy: decorateRegex(regex),
+    strategy: decorateRegex(regex, options),
   };
 }
