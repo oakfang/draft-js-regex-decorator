@@ -6,7 +6,7 @@ import {
   ContentState,
   CompositeDecorator,
 } from 'draft-js';
-import createRegExDecorator from '../src';
+import createRegExDecorator, { createWorldListDecorator } from '../src';
 
 const Greeting: React.FC = ({ children }) => {
   return <span className="greeting">{children}</span>;
@@ -17,11 +17,6 @@ const Curse: React.FC = ({ children }) => {
 };
 
 const helloDecorator = createRegExDecorator(/hello/gi, Greeting);
-const hellDecorator = createRegExDecorator(
-  /(?:^|\W)(hell)(?:$|\W)/gi,
-  Curse,
-  {}
-);
 
 function getContainer(input: string) {
   const state = EditorState.createWithContent(
@@ -44,12 +39,20 @@ test('It wraps text correctly', () => {
 
 test('Trim option', () => {
   const state = EditorState.createWithContent(
-    ContentState.createFromText('hello world'),
-    new CompositeDecorator([hellDecorator, helloDecorator])
+    ContentState.createFromText('hell world foo'),
+    new CompositeDecorator([
+      createRegExDecorator(/(?:^|\W)(hell|meow)(?:$|\W)/gi, Curse, {
+        trim: true,
+      }),
+      createWorldListDecorator(['world', 'foo'], Greeting, {
+        trim: true,
+      }),
+    ])
   );
   const { container } = render(
     <Editor editorState={state} onChange={() => null} />
   );
-  expect(container.querySelector('.curse')).toBeNull();
+  expect(container.querySelector('.curse')).not.toBeNull();
   expect(container.querySelector('.greeting')).not.toBeNull();
+  expect(container.querySelectorAll('.greeting').length).toBe(2);
 });

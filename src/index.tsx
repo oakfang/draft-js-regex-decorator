@@ -20,6 +20,7 @@ const decorateRegex = (
     )) {
       if (trim) {
         match = match.trim();
+        index;
       }
       callback(index, index + match.length);
     }
@@ -35,4 +36,13 @@ export default function createRegExDecorator(
     component,
     strategy: decorateRegex(regex, options),
   };
+}
+
+export function createWorldListDecorator(
+  words: string[],
+  component: ComponentType<{}>,
+  options?: Partial<DecoratorRegexOptions>
+): DraftDecorator {
+  const regex = new RegExp(`(?:^|(?<= ))(${words.join('|')})(?:(?= )|$)`, 'ig');
+  return createRegExDecorator(regex, component, options);
 }

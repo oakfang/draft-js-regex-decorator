@@ -1,7 +1,7 @@
 {
   "name": "draft-js-regex-decorator",
   "description": "A RegEx based DraftJS decorator",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "license": "MIT",
   "author": "Alon Niv",
   "main": "dist/index.js",
